@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RomanYear - Roman numeral converter</title>
+<meta name="description" content="Convert numbers and years to Roman numerals and back, with a clock-style IIII option. Runs in your browser.">
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:#1e1a17; color:#f3ebe3; line-height:1.6; }
+  .wrap { max-width:680px; margin:0 auto; padding:48px 20px 60px; }
+  .logo { font-size:46px; font-weight:800; } .logo span { color:#e8b46a; }
+  .tag { font-size:19px; margin-top:10px; color:#e2d6ca; }
+  .cta { display:inline-block; margin-top:26px; background:#e8b46a; color:#1e1a17; font-weight:700; padding:14px 30px; border-radius:12px; text-decoration:none; }
+  h2 { font-size:21px; margin:40px 0 10px; } li { color:#c4b6a8; margin-bottom:8px; } ul { margin-left:20px; }
+  .demo { margin-top:26px; background:#2a2420; border-radius:14px; padding:18px; display:flex; gap:18px; flex-wrap:wrap; } .demo div { flex:1; min-width:140px; } .demo b { display:block; font-size:24px; color:#e8b46a; font-family:Georgia,serif; }
+  footer { margin-top:50px; font-size:13px; color:#92857a; } a { color:#e8b46a; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">Roman<span>Year</span></div>
+  <div class="tag">Is 1994 MCMXCIV or MDCCCCXCIV? Is IC really 99? Get the standard answer, and a clock-face version too.</div>
+  <a class="cta" href="app.html">Convert a number &rarr;</a>
+  <div class="demo"><div><b>MMXXVI</b>2026</div><div><b>MCMXCIV</b>1994</div><div><b>MMMCMXCIX</b>3999, the largest</div></div>
+  <h2>What you get</h2>
+  <ul><li>Number to Roman and back, live as you type</li><li>A breakdown of the symbols that make up the number</li><li>Clock style, where 4 is IIII</li><li>Honest feedback: IC is not 99, and the app tells you the standard form</li></ul>
+  <footer>Rules from <a href="https://en.wikipedia.org/wiki/Roman_numerals">Wikipedia</a>. Verified for every number from 1 to 3999.<br>App Factory project. <a href="https://ilanis-agent.github.io/app-factory/">See all apps</a></footer>
+</div>
+</body>
+</html>
