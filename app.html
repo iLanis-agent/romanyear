@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RomanYear - Roman numeral converter</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:#1e1a17; color:#f3ebe3; line-height:1.5; }
+  .wrap { max-width:620px; margin:0 auto; padding:26px 18px 60px; }
+  a { color:#e8b46a; } h1 { font-size:28px; } h1 span { color:#e8b46a; } .sub { color:#b4a698; margin:4px 0 18px; }
+  .card { background:#2a2420; border-radius:14px; padding:16px; margin-bottom:14px; }
+  label { display:block; font-size:13px; color:#b4a698; margin:10px 0 4px; }
+  input { width:100%; padding:12px; border-radius:9px; border:1px solid #54483f; background:#1e1a17; color:#f3ebe3; font-size:18px; font-family:inherit; }
+  input.bad { border-color:#e0746a; }
+  .row { display:flex; gap:10px; } .row > div { flex:1; }
+  .big { font-size:42px; font-weight:800; color:#e8b46a; word-break:break-all; font-family:Georgia,'Times New Roman',serif; } .lbl { font-size:13px; color:#b4a698; }
+  button { padding:9px 14px; border-radius:9px; border:1px solid #54483f; background:#1e1a17; color:#f3ebe3; font-size:14px; cursor:pointer; margin:8px 6px 0 0; } button.on { background:#e8b46a; color:#1e1a17; border-color:#e8b46a; font-weight:700; }
+  .chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; } .chip { background:#1e1a17; border-radius:10px; padding:8px 12px; text-align:center; } .chip b { display:block; font-size:22px; font-family:Georgia,serif; color:#e8b46a; } .chip span { font-size:12px; color:#b4a698; }
+  .note { font-size:14px; color:#e2d6ca; margin-top:10px; } h2 { font-size:17px; margin-bottom:8px; } .small { font-size:13px; color:#b4a698; }
+  .warn { background:#3d2a20; border:1px solid #b9703f; color:#ffddc4; padding:12px; border-radius:10px; margin-top:12px; font-size:14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Roman<span>Year</span></h1>
+  <div class="sub">Turn a number or year into Roman numerals, or read Roman numerals as a number.</div>
+  <div class="card">
+    <div class="row"><div><label for="num">Number (1 to 3999)</label><input id="num" inputmode="numeric" value="2026"></div><div><label for="rom">Roman numerals</label><input id="rom" value="MMXXVI" autocapitalize="characters"></div></div>
+    <button id="clock">Clock style (IIII)</button><button id="thisyear">This year</button><button data-v="1994">1994</button><button data-v="3999">3999</button>
+  </div>
+  <div class="card" id="out"></div>
+  <div class="card"><h2>About this</h2><div class="small">Standard form uses subtractive pairs IV, IX, XL, XC, CD, CM, and tops out at 3999 (MMMCMXCIX), as described on <a href="https://en.wikipedia.org/wiki/Roman_numerals">Wikipedia</a>. Clock faces often write 4 as IIII, and the Colosseum gate 44 is XLIIII. The reader accepts the standard form and the clock style, and tells you the standard form when a numeral is non-standard (IC is not 99). Runs in your browser.</div></div>
+</div>
+<script src="engine.js"></script>
+<script>
+var $ = function (i) { return document.getElementById(i); }, clock = false;
+function show(n, src) {
+  var r = Rom.toRoman(n, clock), h = '<div class="lbl">' + n + ' in Roman numerals</div><div class="big" id="roman">' + r + '</div><div class="chips" id="parts">';
+  Rom.parts(n).forEach(function (p) { h += '<div class="chip"><b>' + (p.sym) + (p.count > 1 ? ' x' + p.count : '') + '</b><span>' + p.each * p.count + '</span></div>'; });
+  h += '</div>'; $('out').innerHTML = h;
+}
+function fromNum() {
+  var v = $('num').value.trim(), n = /^\d+$/.test(v) ? +v : null; $('num').className = n && n >= 1 && n <= 3999 ? '' : 'bad';
+  if (!n || n < 1 || n > 3999) { $('out').innerHTML = '<div class="warn" id="err">Enter a whole number from 1 to 3999. Standard Roman numerals have no zero and stop at MMMCMXCIX.</div>'; return; }
+  $('rom').className = ''; $('rom').value = Rom.toRoman(n, clock); show(n);
+}
+function fromRom() {
+  var r = Rom.fromRoman($('rom').value);
+  if (!r.ok) { $('rom').className = 'bad'; $('out').innerHTML = '<div class="warn" id="err">' + r.why + '.</div>'; return; }
+  $('rom').className = ''; $('num').className = ''; $('num').value = r.value; show(r.value); if (r.note) $('out').innerHTML += '<div class="note" id="note">' + r.note + '.</div>';
+}
+$('num').oninput = fromNum; $('rom').oninput = fromRom;
+$('clock').onclick = function () { clock = !clock; $('clock').className = clock ? 'on' : ''; fromNum(); };
+$('thisyear').onclick = function () { $('num').value = new Date().getFullYear(); fromNum(); };
+Array.prototype.forEach.call(document.querySelectorAll('button[data-v]'), function (b) { b.onclick = function () { $('num').value = b.getAttribute('data-v'); fromNum(); }; });
+fromNum();
+</script>
+</body>
+</html>
